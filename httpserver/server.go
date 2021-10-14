@@ -4,14 +4,14 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
 
 	"MTS/profile/httpserver/api"
+	"MTS/profile/httpserver/middlewares"
 )
 
 func New() *http.Server {
 	router := chi.NewRouter()
-	router.Use(middleware.Logger)
+	router.Use(middlewares.Logging)
 
 	subApp := api.New()
 	subApp.ApplyEndpoints(router)
