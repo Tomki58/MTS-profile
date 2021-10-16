@@ -2,13 +2,14 @@ package templates
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
+	"regexp"
 
 	"golang.org/x/net/html"
 )
 
-// TODO: check for regexp {{.*}}
+var parameter string = `{{.+}}`
+
 // ParseTemplate reads the data and return recognized parameters
 func ParseTemplate(data []byte) ([]string, error) {
 	var parameters []string
@@ -24,7 +25,11 @@ func ParseTemplate(data []byte) ([]string, error) {
 		tt := tokenizer.Next()
 		switch tt {
 		case html.TextToken:
-			fmt.Println(string(tokenizer.Text()))
+			// check that token data doesn't start with \n
+			tokenData := tokenizer.Token().Data
+			if match, _ := regexp.MatchString(parameter, tokenData); match {
+				parameters = append(parameters, tokenData)
+			}
 		case html.ErrorToken:
 			return parameters, nil
 		default:

@@ -8,12 +8,7 @@ import (
 )
 
 func (a *App) uploadTemplate(w http.ResponseWriter, r *http.Request) {
-	reader, err := r.GetBody()
-	if err != nil {
-		errMsg := serializer.SerializeResponseJSON(err)
-		http.Error(w, string(errMsg), http.StatusBadRequest)
-		return
-	}
+	reader := r.Body
 
 	postBody, err := io.ReadAll(reader)
 	if err != nil {
