@@ -16,3 +16,6 @@
 
 # binary files
 /profile
+
+# html-template files
+*.html
